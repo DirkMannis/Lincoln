@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lincoln Hold'em</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- MENU -->
+  <div id="menu" class="screen active">
+    <div class="hero">
+      <h1>Lincoln Hold'em</h1>
+      <p>A 4-card variant with strategic discards</p>
+      <button class="btn" onclick="showScreen('setup')">Play vs Computer</button>
+      <button class="btn secondary" onclick="showScreen('rules')">How to Play</button>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div id="rules" class="screen">
+    <div class="hero">
+      <h1>How to Play</h1>
+      <button class="btn secondary" onclick="showScreen('menu')">← Back</button>
+    </div>
+    <div class="rules-box">
+      <h2>Lincoln Hold'em Rules</h2>
+      <ol>
+        <li>Each player is dealt <strong>4 hole cards</strong>.</li>
+        <li>Betting and blinds work the same as Texas Hold'em / Omaha.</li>
+        <li><strong>Pre-flop</strong> betting round.</li>
+        <li>Deal the <strong>Flop</strong> (3 community cards) → betting round.</li>
+        <li>Before the Turn: every active player <strong>must discard 1 card</strong>.</li>
+        <li>Deal the <strong>Turn</strong> → betting round.</li>
+        <li>Before the River: every active player <strong>must discard 1 card</strong>.</li>
+        <li>Deal the <strong>River</strong> → final betting round.</li>
+        <li>At showdown, standard Hold'em rankings apply (each player has 2 hole cards left).</li>
+      </ol>
+      <p class="note">Heads-up only for now. Play until one player has all the chips.</p>
+    </div>
+  </div>
+
+  <!-- SETUP -->
+  <div id="setup" class="screen">
+    <div class="hero">
+      <h1>Game Setup</h1>
+      <button class="btn secondary" onclick="showScreen('menu')">← Back</button>
+    </div>
+    <div class="setup-grid">
+      <div>
+        <label for="startChips">Starting Chips (each)</label>
+        <input type="number" id="startChips" value="1000" min="100" step="100">
+      </div>
+      <div>
+        <label for="difficulty">Difficulty</label>
+        <select id="difficulty">
+          <option value="1">Easy</option>
+          <option value="2" selected>Medium</option>
+          <option value="3">Hard</option>
+        </select>
+      </div>
+      <div>
+        <label for="maxBetBB">Max Bet (Big Blinds per round)</label>
+        <select id="maxBetBB">
+          <option value="2">2 BB</option>
+          <option value="3">3 BB</option>
+          <option value="4" selected>4 BB (default)</option>
+          <option value="6">6 BB</option>
+          <option value="8">8 BB</option>
+          <option value="0">No Limit</option>
+        </select>
+      </div>
+      <button class="btn" onclick="startGame()">Start Match</button>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="game" class="screen">
+    <div class="status-bar">
+      <div class="blind-info">
+        Blinds: <span id="blindDisplay">5 / 10</span>
+        &nbsp;|&nbsp; Level <span id="levelDisplay">1</span>
+        &nbsp;|&nbsp; Next increase: <span id="nextBlindTime">3:00</span>
+      </div>
+      <button class="btn secondary btn-small" onclick="confirmQuit()">Quit</button>
+    </div>
+
+    <div class="table-wrapper">
+      <div class="player-area opponent">
+        <div class="player-name">Computer <span class="stack" id="compStack">1000</span></div>
+        <div class="cards" id="compCards"></div>
+      </div>
+
+      <div class="pot-info">Pot: <span id="potAmount">0</span></div>
+      <div class="community" id="communityCards"></div>
+      <div class="action-log" id="actionLog">Welcome to Lincoln Hold'em</div>
+      <div class="action-log computer-log" id="computerLog"></div>
+
+      <div class="player-area human">
+        <div class="player-name">You <span class="stack" id="humanStack">1000</span></div>
+        <div class="cards" id="humanCards"></div>
+      </div>
+    </div>
+
+    <div id="message" class="message hidden"></div>
+
+    <div class="controls" id="actionControls">
+      <button class="btn secondary" id="btnFold" onclick="playerAction('fold')">Fold</button>
+      <button class="btn secondary" id="btnCheck" onclick="playerAction('check')">Check</button>
+      <button class="btn secondary" id="btnCall" onclick="playerAction('call')">Call</button>
+
+      <div class="bet-controls">
+        <input type="number" id="betAmount" value="20" min="1">
+        <button class="btn" id="btnBet" onclick="playerAction('bet')">Bet</button>
+        <button class="btn" id="btnRaise" onclick="playerAction('raise')">Raise</button>
+      </div>
+
+      <button class="btn" id="btnAllIn" onclick="playerAction('allin')">All-In</button>
+    </div>
+
+    <div class="controls hidden" id="discardControls">
+      <p class="discard-hint">Select 1 card to discard</p>
+      <button class="btn" id="btnDiscard" onclick="confirmDiscard()" disabled>Discard Selected</button>
+    </div>
+
+    <div class="controls hidden" id="nextHandControls">
+      <button class="btn" onclick="newHand()">Next Hand</button>
+    </div>
+  </div>
+
+  <!-- Only external script - no inline game code -->
+  <script src="js/game.js"></script>
+</body>
+</html>
