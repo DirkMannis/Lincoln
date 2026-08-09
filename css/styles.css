@@ -5,7 +5,11 @@
   --card-bg: #f8f5f0;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
@@ -14,13 +18,32 @@ body {
   min-height: 100vh;
 }
 
-.screen { display: none; padding: 20px; max-width: 1100px; margin: 0 auto; }
-.screen.active { display: block; }
+.screen {
+  display: none;
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.screen.active {
+  display: block;
+}
 
-.hero { text-align: center; padding: 40px 20px; }
-.hero h1 { font-size: 2.8rem; color: var(--gold); margin-bottom: 8px; }
-.hero p { color: #aaa; margin-bottom: 30px; }
+/* ===== HERO / MENU ===== */
+.hero {
+  text-align: center;
+  padding: 40px 20px;
+}
+.hero h1 {
+  font-size: 2.8rem;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.hero p {
+  color: #aaa;
+  margin-bottom: 30px;
+}
 
+/* ===== BUTTONS ===== */
 .btn {
   background: var(--gold);
   color: #111;
@@ -33,11 +56,24 @@ body {
   margin: 6px;
   transition: transform 0.15s;
 }
-.btn:hover { transform: translateY(-2px); }
-.btn.secondary { background: #333; color: #eee; }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.btn-small { padding: 6px 14px; font-size: 0.9rem; }
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn.secondary {
+  background: #333;
+  color: #eee;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-small {
+  padding: 6px 14px;
+  font-size: 0.9rem;
+}
 
+/* ===== RULES ===== */
 .rules-box {
   background: #1a1a1a;
   border-radius: 12px;
@@ -46,11 +82,22 @@ body {
   max-width: 700px;
   line-height: 1.6;
 }
-.rules-box h2 { color: var(--gold); margin-bottom: 16px; }
-.rules-box ol { padding-left: 22px; }
-.rules-box li { margin-bottom: 10px; }
-.note { margin-top: 20px; color: #aaa; }
+.rules-box h2 {
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.rules-box ol {
+  padding-left: 22px;
+}
+.rules-box li {
+  margin-bottom: 10px;
+}
+.note {
+  margin-top: 20px;
+  color: #aaa;
+}
 
+/* ===== SETUP ===== */
 .setup-grid {
   display: grid;
   gap: 18px;
@@ -60,7 +107,11 @@ body {
   padding: 28px;
   border-radius: 12px;
 }
-.setup-grid label { display: block; margin-bottom: 6px; color: #bbb; }
+.setup-grid label {
+  display: block;
+  margin-bottom: 6px;
+  color: #bbb;
+}
 .setup-grid select,
 .setup-grid input {
   width: 100%;
@@ -72,6 +123,7 @@ body {
   font-size: 1rem;
 }
 
+/* ===== TABLE ===== */
 .table-wrapper {
   background: radial-gradient(ellipse at center, var(--felt) 0%, var(--felt-dark) 70%);
   border-radius: 20px;
@@ -80,15 +132,30 @@ body {
   position: relative;
   min-height: 520px;
   border: 8px solid #5a3e1b;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.player-area { text-align: center; margin: 18px 0; }
-.player-area.opponent { margin-bottom: 30px; }
-.player-area.human { margin-top: 30px; }
-.player-name { font-weight: 600; margin-bottom: 6px; color: #fff; }
-.player-name .stack { color: var(--gold); font-size: 0.95rem; }
+.player-area {
+  text-align: center;
+  margin: 18px 0;
+}
+.player-area.opponent {
+  margin-bottom: 30px;
+}
+.player-area.human {
+  margin-top: 30px;
+}
+.player-name {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #fff;
+}
+.player-name .stack {
+  color: var(--gold);
+  font-size: 0.95rem;
+}
 
+/* ===== CARDS ===== */
 .cards {
   display: flex;
   justify-content: center;
@@ -98,7 +165,7 @@ body {
 }
 
 .card {
-  width: 68px;          /* slightly wider to fit larger text */
+  width: 68px;
   height: 96px;
   background: var(--card-bg);
   border-radius: 6px;
@@ -108,21 +175,13 @@ body {
   justify-content: center;
   font-weight: 700;
   color: #111;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
   user-select: none;
   line-height: 1.05;
 }
-
-.card .rank {
-  font-size: 1.55rem;   /* bigger rank (K, 4, T, etc.) */
+.card.red {
+  color: #c00;
 }
-
-.card .suit {
-  font-size: 1.85rem;   /* even bigger suit */
-  margin-top: 1px;
-}
-
-.card.red { color: #c00; }
 .card.back {
   background: linear-gradient(135deg, #1a3a6d, #0d2244);
   color: transparent;
@@ -132,6 +191,15 @@ body {
   transform: translateY(-8px);
 }
 
+.card .rank {
+  font-size: 1.55rem;
+}
+.card .suit {
+  font-size: 1.85rem;
+  margin-top: 1px;
+}
+
+/* ===== COMMUNITY / POT ===== */
 .community {
   display: flex;
   justify-content: center;
@@ -146,14 +214,18 @@ body {
   margin: 10px 0;
   color: #fff;
 }
-.pot-info span { color: var(--gold); font-weight: 700; }
+.pot-info span {
+  color: var(--gold);
+  font-weight: 700;
+}
 
+/* ===== LOGS ===== */
 .action-log {
-  background: rgba(0,0,0,0.35);
+  background: rgba(0, 0, 0, 0.35);
   border-radius: 8px;
   padding: 10px 14px;
   max-width: 520px;
-  margin: 12px auto;
+  margin: 12px auto 0;
   font-size: 0.95rem;
   color: #ddd;
   min-height: 42px;
@@ -161,12 +233,18 @@ body {
 }
 
 .computer-log {
-  margin-top: 6px;
-  color: #9fd3ff;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  padding: 8px 14px;
+  max-width: 520px;
+  margin: 6px auto 0;
   font-size: 0.95rem;
+  color: #9fd3ff;
   min-height: 28px;
+  text-align: center;
 }
 
+/* ===== CONTROLS ===== */
 .controls {
   display: flex;
   justify-content: center;
@@ -202,7 +280,9 @@ body {
   margin-bottom: 15px;
   font-size: 0.95rem;
 }
-.blind-info { color: #aaa; }
+.blind-info {
+  color: #aaa;
+}
 
 .message {
   text-align: center;
@@ -213,10 +293,52 @@ body {
   color: var(--gold);
   font-weight: 600;
 }
-.hidden { display: none !important; }
+.hidden {
+  display: none !important;
+}
 
 .discard-hint {
   width: 100%;
   text-align: center;
   margin-bottom: 10px;
+}
+
+/* ===== MOBILE – keep 4 hole cards on one row ===== */
+@media (max-width: 520px) {
+  .card {
+    width: 52px;
+    height: 74px;
+  }
+  .card .rank {
+    font-size: 1.25rem;
+  }
+  .card .suit {
+    font-size: 1.45rem;
+  }
+  .cards {
+    gap: 5px;
+  }
+  .table-wrapper {
+    padding: 20px 12px 30px;
+    border-width: 6px;
+  }
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .card {
+    width: 46px;
+    height: 66px;
+  }
+  .card .rank {
+    font-size: 1.1rem;
+  }
+  .card .suit {
+    font-size: 1.3rem;
+  }
+  .cards {
+    gap: 4px;
+  }
 }
