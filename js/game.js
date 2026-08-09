@@ -122,8 +122,8 @@ let state = {};
 
 function initState(startChips, difficulty, maxBetBB) {
   state = {
-    human: { stack: startChips, hole: [], bet: 0, folded: false, allIn: false, acted: false },
-    comp:  { stack: startChips, hole: [], bet: 0, folded: false, allIn: false, acted: false },
+human: { stack: startChips, hole: [], discarded: [], bet: 0, folded: false, allIn: false, acted: false },
+comp:  { stack: startChips, hole: [], discarded: [], bet: 0, folded: false, allIn: false, acted: false },
     community: [],
     pot: 0,
     deck: [],
@@ -152,17 +152,24 @@ function showScreen(id) {
   document.getElementById(id).classList.add('active');
 }
 
-function renderCard(card, faceUp = true, selectable = false) {
+function renderCard(card, faceUp = true, selectable = false, isDiscarded = false) {
   if (!faceUp) return `<div class="card back"></div>`;
+
   const red = (card.suit === '♥' || card.suit === '♦') ? 'red' : '';
   const sel = (selectable && state.selectedDiscard === card.code) ? 'selected' : '';
+  const disc = isDiscarded ? 'discarded' : '';
   const click = selectable ? `onclick="selectDiscard('${card.code}')"` : '';
+
   return `
-    <div class="card ${red} ${sel}" ${click}>
-      <span class="rank">${card.rank}</span>
-      <span class="suit">${card.suit}</span>
+    <div class="card-wrapper">
+      ${isDiscarded ? '<div class="discard-label">Discarded</div>' : ''}
+      <div class="card ${red} ${sel} ${disc}" ${click}>
+        <span class="rank">${card.rank}</span>
+        <span class="suit">${card.suit}</span>
+      </div>
     </div>`;
 }
+
 
 function updateUI() {
   document.getElementById('humanStack').textContent =
@@ -172,14 +179,23 @@ function updateUI() {
   document.getElementById('potAmount').textContent =
     state.pot + state.human.bet + state.comp.bet;
 
-  const showComp = state.phase === 'showdown' || state.gameOver;
-  document.getElementById('compCards').innerHTML =
-    state.comp.hole.map(c => renderCard(c, showComp)).join('');
+// Computer cards (active + discarded at showdown)
+const showComp = state.phase === 'showdown' || state.gameOver;
+let compHtml = state.comp.hole.map(c => renderCard(c, showComp)).join('');
+if (showComp && state.comp.discarded.length) {
+  compHtml += state.comp.discarded.map(c => renderCard(c, true, false, true)).join('');
+}
+document.getElementById('compCards').innerHTML = compHtml;
 
-  const canSelect = (state.phase === 'discard1' || state.phase === 'discard2') && state.acting === 'human';
-  document.getElementById('humanCards').innerHTML =
-    state.human.hole.map(c => renderCard(c, true, canSelect)).join('');
+// Human cards (active + discarded)
+const canSelect = (state.phase === 'discard1' || state.phase === 'discard2') && state.acting === 'human';
+let humanHtml = state.human.hole.map(c => renderCard(c, true, canSelect)).join('');
+if (state.human.discarded.length) {
+  humanHtml += state.human.discarded.map(c => renderCard(c, true, false, true)).join('');
+}
+document.getElementById('humanCards').innerHTML = humanHtml;
 
+  
   document.getElementById('communityCards').innerHTML =
     state.community.map(c => renderCard(c)).join('');
 
@@ -294,6 +310,8 @@ function newHand() {
   state.comp.bet = 0;
   state.human.folded = false;
   state.comp.folded = false;
+  state.human.discarded = [];
+  state.comp.discarded = [];
   state.human.allIn = false;
   state.comp.allIn = false;
   state.human.acted = false;
@@ -514,11 +532,12 @@ function confirmDiscard() {
   const idx = state.human.hole.findIndex(c => c.code === state.selectedDiscard);
   if (idx === -1) return;
 
-  state.human.hole.splice(idx, 1);
+  const card = state.human.hole.splice(idx, 1)[0];
+  state.human.discarded.push(card);
   state.selectedDiscard = null;
   log('You discarded 1 card');
 
-  // Ensure computer discarded
+  // Computer discard
   if (state.phase === 'discard1' && state.comp.hole.length > 3) compDiscard();
   if (state.phase === 'discard2' && state.comp.hole.length > 2) compDiscard();
 
@@ -548,8 +567,10 @@ function compDiscard() {
     }
   });
 
-  state.comp.hole.splice(worstIdx, 1);
+  const card = state.comp.hole.splice(worstIdx, 1)[0];
+  state.comp.discarded.push(card);
 }
+
 
 function endHand() {
   state.pot += state.human.bet + state.comp.bet;
