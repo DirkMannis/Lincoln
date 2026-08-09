@@ -39,15 +39,6 @@ function combinations(arr, k) {
   return res;
 }
 
-function logComputer(msg) {
-  document.getElementById('computerLog').textContent = msg;
-}
-
-function log(msg) {
-  document.getElementById('actionLog').textContent = msg;
-}
-
-
 function evaluate5(cards) {
   const ranks = cards.map(c => RANK_VAL[c.rank]).sort((a, b) => b - a);
   const suits = cards.map(c => c.suit);
@@ -88,24 +79,24 @@ function evaluate5(cards) {
     score = 6000000 + sortedByCount[0] * 100 + sortedByCount[1];
     name = 'Full House';
   } else if (isFlush) {
-    score = 5000000 + ranks[0] * 10000 + ranks[1] * 1000 + ranks[2] * 100 + ranks[3] * 10 + ranks[4];
+    score = 5000000 + ranks[0]*10000 + ranks[1]*1000 + ranks[2]*100 + ranks[3]*10 + ranks[4];
     name = 'Flush';
   } else if (isStraight) {
     score = 4000000 + highStraight;
     name = 'Straight';
   } else if (counts[0] === 3) {
-    score = 3000000 + sortedByCount[0] * 10000 + sortedByCount[1] * 100 + sortedByCount[2];
+    score = 3000000 + sortedByCount[0]*10000 + sortedByCount[1]*100 + sortedByCount[2];
     name = 'Three of a Kind';
   } else if (counts[0] === 2 && counts[1] === 2) {
     const highPair = Math.max(sortedByCount[0], sortedByCount[1]);
-    const lowPair = Math.min(sortedByCount[0], sortedByCount[1]);
-    score = 2000000 + highPair * 10000 + lowPair * 100 + sortedByCount[2];
+    const lowPair  = Math.min(sortedByCount[0], sortedByCount[1]);
+    score = 2000000 + highPair*10000 + lowPair*100 + sortedByCount[2];
     name = 'Two Pair';
   } else if (counts[0] === 2) {
-    score = 1000000 + sortedByCount[0] * 10000 + sortedByCount[1] * 1000 + sortedByCount[2] * 100 + sortedByCount[3];
+    score = 1000000 + sortedByCount[0]*10000 + sortedByCount[1]*1000 + sortedByCount[2]*100 + sortedByCount[3];
     name = 'One Pair';
   } else {
-    score = ranks[0] * 10000 + ranks[1] * 1000 + ranks[2] * 100 + ranks[3] * 10 + ranks[4];
+    score = ranks[0]*10000 + ranks[1]*1000 + ranks[2]*100 + ranks[3]*10 + ranks[4];
     name = 'High Card';
   }
 
@@ -139,7 +130,7 @@ function initState(startChips, difficulty, maxBetBB) {
     phase: 'preflop',
     currentBet: 0,
     minRaise: 0,
-    button: 1, // 0 = human is button, 1 = computer is button
+    button: 1,               // 0 = human button, 1 = computer button
     acting: null,
     difficulty: +difficulty,
     maxBetBB: +maxBetBB,
@@ -210,12 +201,12 @@ function updateUI() {
 
   const toCall = state.currentBet - state.human.bet;
   document.getElementById('btnCheck').style.display = toCall === 0 ? 'inline-block' : 'none';
-  document.getElementById('btnCall').style.display = toCall > 0 ? 'inline-block' : 'none';
+  document.getElementById('btnCall').style.display  = toCall > 0  ? 'inline-block' : 'none';
   document.getElementById('btnCall').textContent = `Call ${toCall}`;
-  document.getElementById('btnBet').style.display = state.currentBet === 0 ? 'inline-block' : 'none';
-  document.getElementById('btnRaise').style.display = state.currentBet > 0 ? 'inline-block' : 'none';
+  document.getElementById('btnBet').style.display   = state.currentBet === 0 ? 'inline-block' : 'none';
+  document.getElementById('btnRaise').style.display = state.currentBet > 0  ? 'inline-block' : 'none';
 
-  // Max bet limit for input
+  // Max bet limit for the input
   let maxBet = state.human.stack;
   if (state.maxBetBB > 0) {
     maxBet = Math.min(maxBet, state.maxBetBB * state.bb);
@@ -241,10 +232,15 @@ function log(msg) {
   document.getElementById('actionLog').textContent = msg;
 }
 
+function logComputer(msg) {
+  const el = document.getElementById('computerLog');
+  if (el) el.textContent = msg;
+}
+
 // ===================== GAME FLOW =====================
 function startGame() {
   const chips = +document.getElementById('startChips').value || 1000;
-  const diff = document.getElementById('difficulty').value;
+  const diff  = document.getElementById('difficulty').value;
   const maxBB = document.getElementById('maxBetBB').value;
   initState(chips, diff, maxBB);
   showScreen('game');
@@ -300,13 +296,16 @@ function newHand() {
   state.comp.folded = false;
   state.human.allIn = false;
   state.comp.allIn = false;
+  state.human.acted = false;
+  state.comp.acted = false;
   state.currentBet = 0;
   state.minRaise = state.bb;
   state.phase = 'preflop';
   state.selectedDiscard = null;
   state.message = '';
+  logComputer('');          // clear previous computer action
 
-  // Alternate button each hand
+  // Alternate button
   state.button = 1 - state.button;
 
   // Deal 4 cards each
@@ -315,14 +314,11 @@ function newHand() {
     state.comp.hole.push(state.deck.pop());
   }
 
-  // Heads-up blinds:
-  // Button posts Small Blind, other player posts Big Blind
+  // Heads-up blinds: Button posts SB, other posts BB
   if (state.button === 0) {
-    // Human is Button → Human SB, Computer BB
     postBlind('human', state.sb);
     postBlind('comp', state.bb);
   } else {
-    // Computer is Button → Computer SB, Human BB
     postBlind('comp', state.sb);
     postBlind('human', state.bb);
   }
@@ -428,12 +424,11 @@ function afterAction() {
     state.minRaise = state.bb;
     nextPhase();
   } else {
-    // Switch to the other player
+    // Switch actor
     state.acting = state.acting === 'human' ? 'comp' : 'human';
 
-    // Skip if they cannot act
     if (state[state.acting].folded || state[state.acting].allIn) {
-      afterAction(); // re-check
+      afterAction(); // re-evaluate
       return;
     }
 
@@ -442,7 +437,6 @@ function afterAction() {
   }
   updateUI();
 }
-
 
 function nextPhase() {
   if (state.human.folded || state.comp.folded) {
@@ -499,7 +493,6 @@ function startBettingRound() {
   // Post-flop: non-button acts first
   state.acting = state.button === 0 ? 'comp' : 'human';
 
-  // Skip players who cannot act
   if (state[state.acting].folded || state[state.acting].allIn) {
     state.acting = state.acting === 'human' ? 'comp' : 'human';
   }
@@ -507,7 +500,6 @@ function startBettingRound() {
   updateUI();
   if (state.acting === 'comp') setTimeout(compAct, 700);
 }
-
 
 function selectDiscard(code) {
   if (state.phase !== 'discard1' && state.phase !== 'discard2') return;
@@ -526,7 +518,7 @@ function confirmDiscard() {
   state.selectedDiscard = null;
   log('You discarded 1 card');
 
-  // Ensure computer has discarded
+  // Ensure computer discarded
   if (state.phase === 'discard1' && state.comp.hole.length > 3) compDiscard();
   if (state.phase === 'discard2' && state.comp.hole.length > 2) compDiscard();
 
@@ -564,7 +556,7 @@ function endHand() {
   state.human.bet = 0;
   state.comp.bet = 0;
 
-  const potWon = state.pot;   // capture the amount before we zero it
+  const potWon = state.pot;
 
   let winner = null;
   let msg = '';
@@ -605,7 +597,6 @@ function endHand() {
   updateUI();
 }
 
-
 // ===================== COMPUTER AI =====================
 function estimateStrength(hole, community) {
   if (community.length === 0) {
@@ -640,7 +631,6 @@ function compAct() {
   let raiseTo = 0;
 
   if (toCall === 0) {
-    // Can check or bet
     if (strength > 0.58 + (3 - diff) * 0.06 && Math.random() < 0.40 + diff * 0.12) {
       action = 'bet';
       raiseTo = Math.min(p.stack + p.bet, state.bb * (1 + Math.floor(Math.random() * 3)));
@@ -648,7 +638,6 @@ function compAct() {
       action = 'check';
     }
   } else {
-    // Facing a bet
     const potOdds = toCall / (pot + toCall);
 
     if (strength > potOdds + 0.10 - diff * 0.03) {
@@ -659,7 +648,6 @@ function compAct() {
         action = 'call';
       }
     } else if (strength < 0.32 && Math.random() < 0.55 + (3 - diff) * 0.1) {
-      // More likely to fold on Easy
       action = 'fold';
     } else {
       action = 'call';
