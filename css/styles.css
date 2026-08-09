@@ -455,3 +455,26 @@ body {
     height: 66px;
   }
 }
+
+/* Discarded cards */
+.card.discarded {
+  opacity: 0.38;
+  transform: scale(0.92);
+  filter: grayscale(30%);
+}
+
+.card-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.discard-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #ff8a8a;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  line-height: 1;
+}
