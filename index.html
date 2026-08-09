@@ -8,17 +8,68 @@
 </head>
 <body>
 
-  <!-- MENU -->
+  <!-- ========== LANDING / MENU ========== -->
   <div id="menu" class="screen active">
     <div class="hero">
       <h1>Lincoln Hold'em</h1>
-      <p>A 4-card variant with strategic discards</p>
-      <button class="btn" onclick="showScreen('setup')">Play vs Computer</button>
-      <button class="btn secondary" onclick="showScreen('rules')">How to Play</button>
+      <p class="tagline">A strategic 4-card poker variant — plus classic Texas Hold'em</p>
     </div>
+
+    <!-- Mock hand showcase -->
+    <div class="showcase">
+      <div class="mini-table">
+        <div class="mini-player opponent">
+          <div class="mini-label">Opponent</div>
+          <div class="cards">
+            <div class="card back"></div>
+            <div class="card back"></div>
+          </div>
+        </div>
+
+        <div class="mini-pot">Pot: <span>420</span></div>
+
+        <div class="community">
+          <div class="card"><span class="rank">A</span><span class="suit">♠</span></div>
+          <div class="card red"><span class="rank">K</span><span class="suit">♥</span></div>
+          <div class="card"><span class="rank">T</span><span class="suit">♠</span></div>
+          <div class="card red"><span class="rank">7</span><span class="suit">♦</span></div>
+          <div class="card"><span class="rank">2</span><span class="suit">♣</span></div>
+        </div>
+
+        <div class="mini-status">River betting round</div>
+
+        <div class="mini-player human">
+          <div class="mini-label">You</div>
+          <div class="cards">
+            <div class="card"><span class="rank">A</span><span class="suit">♥</span></div>
+            <div class="card red"><span class="rank">K</span><span class="suit">♦</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="showcase-caption">Example hand in progress</p>
+    </div>
+
+    <!-- Game choice buttons -->
+    <div class="game-choices">
+      <button class="btn game-btn" onclick="showScreen('setup')">
+        Play Lincoln Hold'em
+        <span class="btn-sub">4 hole cards + strategic discards</span>
+      </button>
+
+      <button class="btn game-btn secondary" onclick="alert('Texas Hold\'em coming very soon!')">
+        Play Texas Hold'em
+        <span class="btn-sub">Classic heads-up Hold'em</span>
+      </button>
+    </div>
+
+    <div class="hero-links">
+      <button class="btn secondary btn-small" onclick="showScreen('rules')">How to Play</button>
+    </div>
+
+    <p class="footer-note">Heads-up vs computer • 3 difficulty levels • No account needed</p>
   </div>
 
-  <!-- RULES -->
+  <!-- ========== RULES ========== -->
   <div id="rules" class="screen">
     <div class="hero">
       <h1>How to Play</h1>
@@ -41,7 +92,7 @@
     </div>
   </div>
 
-  <!-- SETUP -->
+  <!-- ========== SETUP ========== -->
   <div id="setup" class="screen">
     <div class="hero">
       <h1>Game Setup</h1>
@@ -75,7 +126,7 @@
     </div>
   </div>
 
-  <!-- GAME -->
+  <!-- ========== GAME ========== -->
   <div id="game" class="screen">
     <div class="status-bar">
       <div class="blind-info">
@@ -129,7 +180,6 @@
     </div>
   </div>
 
-  <!-- Only external script - no inline game code -->
   <script src="js/game.js"></script>
 </body>
 </html>
