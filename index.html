@@ -15,40 +15,64 @@
       <p class="tagline">A strategic 4-card poker variant — plus classic Texas Hold'em</p>
     </div>
 
-    <!-- Mock hand showcase -->
-    <div class="showcase">
-      <div class="mini-table">
-        <div class="mini-player opponent">
-          <div class="mini-label">Opponent</div>
-          <div class="cards">
-            <div class="card back"></div>
-            <div class="card back"></div>
-          </div>
+<!-- Mock hand showcase -->
+<div class="showcase">
+  <div class="mini-table">
+    <div class="mini-player opponent">
+      <div class="mini-label">Opponent</div>
+      <div class="cards">
+        <div class="card-wrapper">
+          <div class="card"><span class="rank">Q</span><span class="suit">♠</span></div>
         </div>
-
-        <div class="mini-pot">Pot: <span>420</span></div>
-
-        <div class="community">
-          <div class="card"><span class="rank">A</span><span class="suit">♠</span></div>
-          <div class="card red"><span class="rank">K</span><span class="suit">♥</span></div>
-          <div class="card"><span class="rank">T</span><span class="suit">♠</span></div>
-          <div class="card red"><span class="rank">7</span><span class="suit">♦</span></div>
-          <div class="card"><span class="rank">2</span><span class="suit">♣</span></div>
+        <div class="card-wrapper">
+          <div class="card red"><span class="rank">J</span><span class="suit">♥</span></div>
         </div>
-
-        <div class="mini-status">River betting round</div>
-
-        <div class="mini-player human">
-          <div class="mini-label">You</div>
-          <div class="cards">
-            <div class="card"><span class="rank">A</span><span class="suit">♥</span></div>
-            <div class="card red"><span class="rank">K</span><span class="suit">♦</span></div>
-          </div>
+        <div class="card-wrapper">
+          <div class="card discarded"><span class="rank">4</span><span class="suit">♣</span></div>
+          <div class="discard-label">Discarded</div>
+        </div>
+        <div class="card-wrapper">
+          <div class="card discarded red"><span class="rank">9</span><span class="suit">♦</span></div>
+          <div class="discard-label">Discarded</div>
         </div>
       </div>
-      <p class="showcase-caption">Example hand in progress</p>
     </div>
 
+    <div class="mini-pot">Pot: <span>420</span></div>
+
+    <div class="community">
+      <div class="card"><span class="rank">A</span><span class="suit">♠</span></div>
+      <div class="card red"><span class="rank">K</span><span class="suit">♥</span></div>
+      <div class="card"><span class="rank">T</span><span class="suit">♠</span></div>
+      <div class="card red"><span class="rank">7</span><span class="suit">♦</span></div>
+      <div class="card"><span class="rank">2</span><span class="suit">♣</span></div>
+    </div>
+
+    <div class="mini-status">After both discards • River</div>
+
+    <div class="mini-player human">
+      <div class="mini-label">You</div>
+      <div class="cards">
+        <div class="card-wrapper">
+          <div class="card red"><span class="rank">A</span><span class="suit">♥</span></div>
+        </div>
+        <div class="card-wrapper">
+          <div class="card"><span class="rank">K</span><span class="suit">♠</span></div>
+        </div>
+        <div class="card-wrapper">
+          <div class="card discarded"><span class="rank">8</span><span class="suit">♣</span></div>
+          <div class="discard-label">Discarded</div>
+        </div>
+        <div class="card-wrapper">
+          <div class="card discarded red"><span class="rank">3</span><span class="suit">♦</span></div>
+          <div class="discard-label">Discarded</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="showcase-caption">Lincoln Hold'em — discarded cards stay visible</p>
+</div>
+    
     <!-- Game choice buttons -->
     <div class="game-choices">
       <button class="btn game-btn" onclick="showScreen('setup')">
