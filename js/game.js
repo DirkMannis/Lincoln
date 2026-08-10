@@ -162,11 +162,11 @@ function renderCard(card, faceUp = true, selectable = false, isDiscarded = false
 
   return `
     <div class="card-wrapper">
-      ${isDiscarded ? '<div class="discard-label">Discarded</div>' : ''}
       <div class="card ${red} ${sel} ${disc}" ${click}>
         <span class="rank">${card.rank}</span>
         <span class="suit">${card.suit}</span>
       </div>
+      ${isDiscarded ? '<div class="discard-label">Discarded</div>' : ''}
     </div>`;
 }
 
